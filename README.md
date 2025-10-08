@@ -70,7 +70,8 @@ cp .env.example .env   # fill placeholders below
 npm run dev
 ```
 
-Server: `http://localhost:4000/api`
+Local server: `http://localhost:4000/api`
+Deployed server (Render): `https://posts-api-b8x1.onrender.com/api`
 
 ---
 
@@ -101,7 +102,10 @@ AWS_S3_PUBLIC_BASE=https://your-s3-bucket-name.s3.ap-south-1.amazonaws.com
 
 ## API Endpoints
 
-Base URL: `/api`
+Base URLs:
+
+* Local: `http://localhost:4000/api`
+* Deployed: `https://posts-api-b8x1.onrender.com/api`
 
 ### Health
 
@@ -251,6 +255,7 @@ await s3.send(new PutObjectCommand({ Bucket, Key, Body, ContentType }));
   * Start command: `npm run start`
   * Env vars: same as `.env`
 * MongoDB Atlas for hosted DB.
+* Current deployment: **[https://posts-api-b8x1.onrender.com/api](https://posts-api-b8x1.onrender.com/api)**
 
 ---
 

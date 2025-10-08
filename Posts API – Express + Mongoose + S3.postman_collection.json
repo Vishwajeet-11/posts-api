@@ -1,0 +1,353 @@
+{
+	"info": {
+		"_postman_id": "515e359b-adce-471f-b31e-780f6174afee",
+		"name": "Posts API – Express + Mongoose + S3",
+		"description": "REST API for posts with tags, search, filtering, sorting and pagination. Uses S3 for image uploads.\n\nSet the environment variable **baseUrl** to your API base, e.g. `http://localhost:4000/api` or your deployed URL.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31873881"
+	},
+	"item": [
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "GET /health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/health",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Health check"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tags",
+			"item": [
+				{
+					"name": "POST /tags",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"architecture\"\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/tags",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"tags"
+							]
+						},
+						"description": "Create a tag. Body: `{ \"name\": \"tech\" }`"
+					},
+					"response": []
+				},
+				{
+					"name": "GET /tags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/tags?page=1&limit=10&sort=createdAt:desc",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"tags"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "createdAt:desc"
+								}
+							]
+						},
+						"description": "List tags with pagination"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "POST /posts (multipart create)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "My 7 Post",
+									"type": "text"
+								},
+								{
+									"key": "desc",
+									"value": "This is the 7 description",
+									"type": "text"
+								},
+								{
+									"key": "tags[]",
+									"value": "backend",
+									"type": "text"
+								},
+								{
+									"key": "tags[]",
+									"value": "architecture",
+									"type": "text"
+								},
+								{
+									"key": "tags[]",
+									"value": "tech",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/pramo/Downloads/download (3).jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/posts",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"posts"
+							]
+						},
+						"description": "Create a post with optional image and tags.\n- `title` required\n- `desc` optional\n- `tags[]` repeated for multiple tags\n- `image` file"
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /posts/:id (multipart update)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Updated title",
+									"type": "text"
+								},
+								{
+									"key": "desc",
+									"value": "Updated desc",
+									"type": "text"
+								},
+								{
+									"key": "tags[]",
+									"value": "tech",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/posts/{{postId}}",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"posts",
+								"{{postId}}"
+							]
+						},
+						"description": "Update post fields and/or image.\nSet `postId` variable or replace in the URL."
+					},
+					"response": []
+				},
+				{
+					"name": "GET /posts (list + search + filter + sort + pagination)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/posts?page=1&limit=10&sort=createdAt:desc&search=description",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "createdAt:desc"
+								},
+								{
+									"key": "search",
+									"value": "description"
+								},
+								{
+									"key": "tags",
+									"value": "architecture",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Unified listing endpoint.\n- `page`, `limit`\n- `sort` e.g. `createdAt:desc,title:asc`\n- `q` full-text search over title+desc\n- `tags` comma-separated list of tag names or ObjectIds"
+					},
+					"response": []
+				},
+				{
+					"name": "GET /posts/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/posts/{{postId}}",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"posts",
+								"{{postId}}"
+							]
+						},
+						"description": "Get a single post by id. Set `postId` variable or replace."
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /posts/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/posts/{{postId}}",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"posts",
+								"{{postId}}"
+							]
+						},
+						"description": "Delete a post by id."
+					},
+					"response": []
+				},
+				{
+					"name": "search",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "My First Post",
+									"type": "text"
+								},
+								{
+									"key": "desc",
+									"value": "This is the description",
+									"type": "text"
+								},
+								{
+									"key": "tags[]",
+									"value": "tech",
+									"type": "text"
+								},
+								{
+									"key": "tags[]",
+									"value": "nodejs",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/posts/search?search=description",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"posts",
+								"search"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "description"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:4000/api",
+			"type": "string"
+		},
+		{
+			"key": "postId",
+			"value": "<replace-with-objectid>",
+			"type": "string"
+		},
+		{
+			"key": "BaseUrl",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
