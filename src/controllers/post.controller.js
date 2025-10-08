@@ -107,3 +107,8 @@ export const list = catchAsync(async (req, res) => {
 
     res.json(data);
 });
+
+export const searchPosts = (req, res, next) => {
+    req.query.search = req.query.search ?? '';
+    return list(req, res, next);
+};

@@ -5,16 +5,14 @@ const router = Router();
 // create with optional image upload
 router.post('/', postCtrl.uploadImage, postCtrl.create);
 
-// update with optional image upload
 router.patch('/:id', postCtrl.uploadImage, postCtrl.update);
 
+router.get('/search', postCtrl.searchPosts);
 // list with filters, sort, pagination
 router.get('/', postCtrl.list);
 
-// get single post
 router.get('/:id', postCtrl.get);
 
-// delete post
 router.delete('/:id', postCtrl.remove);
 
 export default router;
