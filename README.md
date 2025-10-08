@@ -1,6 +1,6 @@
 # Posts API
 
-REST API built with **Node.js (ESM)**, **Express**, **Mongoose**, and **AWS S3**. Supports posts with tags, full‑text search, filtering, sorting, and pagination via a centralized Mongoose paginate plugin. Includes a Postman collection.
+REST API built with **Node.js (ESM)**, **Express**, **Mongoose**, and **AWS S3**. Supports posts with tags, full-text search, filtering, sorting, and pagination via a centralized Mongoose paginate plugin. Includes a Postman collection.
 
 ---
 
@@ -72,6 +72,8 @@ npm run dev
 
 Local server: `http://localhost:4000/api`
 Deployed server (Render): `https://posts-api-b8x1.onrender.com/api`
+
+> ⚠️ **Note:** On the free Render tier, the server may be in a sleeping state if idle. On the first request, you might experience a short delay (cold start). Just wait a few seconds and the API will respond.
 
 ---
 
